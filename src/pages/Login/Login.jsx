@@ -1,44 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import Icon from "../../assets/icon.png";
 import discord from "../../assets/discord.png";
 import google from "../../assets/google.png";
 import twitter from "../../assets/twitter.png";
 import { useNavigate } from "react-router-dom";
-import supabase from "../../database/supabase";
 import Navbar from "../../components/Navbar";
+import supabase from "../../database/supabase"
 
-const Register = () => {
+const Login = () => {
   const navigate = useNavigate();
 
-  const [credentials, setCredentials] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [confirmation, setConfirmation] = useState(false);
-
   supabase.auth.onAuthStateChange(async (event) => {
-    if (event === "SIGNED_IN") {
+    if (event == "SIGNED_IN") {
       navigate("/success");
-    }
-  });
-  const signUp = async () => {
-    try {
-      await supabase.auth.signUp({
-        email: credentials.email,
-        password: credentials.password,
-      });
-      setConfirmation(true);
-    } catch (error) {
-      console.error("Sign up error:", error.message);
+    } else {
       navigate("/");
     }
-  };
+  });
 
-  function navigateToLogin() {
-    navigate("/login");
+  function navigateToRegister() {
+    navigate("/register");
   }
-
   return (
     <div className="w-screen min-h-screen max-h-full bg-zinc-800 px-24 py-8 overflow-hidden relative flex justify-center items-center font-comfortaa">
       <Navbar />
@@ -47,7 +29,6 @@ const Register = () => {
         className="absolute w-[40%] -bottom-28 -left-52 rotate-12 opacity-50"
         src={Icon}
       />
-
       <div className="flex flex-col p-6 relative w-[30rem] h-fit bg-white">
         <div className="flex flex-col justify-center items-center mb-5 relative">
           <div className="relative">
@@ -55,7 +36,7 @@ const Register = () => {
             <div className="w-20 h-20 bg-bgPrimary absolute inset-0 z-0 blur-2xl rounded-full" />
           </div>
           <h1 className="text-2xl font-semibold">Welcome</h1>
-          <p className="text-sm">Please enter your details to sign up!</p>
+          <p className="text-sm">Please enter your details to sign in!</p>
         </div>
 
         <div className="flex flex-row gap-4 justify-center items-center">
@@ -81,19 +62,11 @@ const Register = () => {
             type="email"
             className="border border-neutral-400 p-2 rounded-lg"
             placeholder="Enter your email..."
-            value={credentials.email}
-            onChange={(e) =>
-              setCredentials({ ...credentials, email: e.target.value })
-            }
           />
           <input
             type="password"
             className="border border-neutral-400 p-2 rounded-lg"
             placeholder="Enter your password..."
-            value={credentials.password}
-            onChange={(e) =>
-              setCredentials({ ...credentials, password: e.target.value })
-            }
           />
         </div>
         <div className="flex flex-row justify-between items-center my-6 text-sm">
@@ -104,19 +77,16 @@ const Register = () => {
           <p className="underline">Forgot password?</p>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <button
-            className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold"
-            onClick={signUp}
-          >
-            Sign up
+          <button className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold">
+            Sign in
           </button>
           <p>
-            Have an account?,{" "}
+            Don't have an account yet?{" "}
             <span
               className="font-bold cursor-pointer"
-              onClick={() => navigateToLogin()}
+              onClick={() => navigateToRegister()}
             >
-              Sign in
+              Sign up
             </span>
           </p>
         </div>
@@ -125,4 +95,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
