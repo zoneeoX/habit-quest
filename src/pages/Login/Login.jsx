@@ -1,26 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
 import Icon from "../../assets/icon.png";
 import discord from "../../assets/discord.png";
 import google from "../../assets/google.png";
 import twitter from "../../assets/twitter.png";
+import github from "../../assets/github.png";
 import { useNavigate } from "react-router-dom";
+import supabase from "../../database/supabase";
 import Navbar from "../../components/Navbar";
-import supabase from "../../database/supabase"
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const [credentials, setCredentials] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [confirmation, setConfirmation] = useState(false);
+
   supabase.auth.onAuthStateChange(async (event) => {
-    if (event == "SIGNED_IN") {
+    if (event === "SIGNED_IN") {
       navigate("/success");
-    } else {
-      navigate("/");
     }
   });
+
+  const signIn = async () => {
+    setConfirmation(true);
+    try {
+      await supabase.auth.signIn({
+        email: credentials.email,
+        password: credentials.password,
+      });
+    } catch (error) {
+      console.error("sign in error:", error.message);
+      navigate("/");
+    }
+  };
+
+  async function signOAuthExternal(type) {
+    await supabase.auth.signInWithOAuth({
+      provider: type,
+    });
+  }
 
   function navigateToRegister() {
     navigate("/register");
   }
+
   return (
     <div className="w-screen min-h-screen max-h-full bg-zinc-800 px-24 py-8 overflow-hidden relative flex justify-center items-center font-comfortaa">
       <Navbar />
@@ -29,7 +55,8 @@ const Login = () => {
         className="absolute w-[40%] -bottom-28 -left-52 rotate-12 opacity-50"
         src={Icon}
       />
-      <div className="flex flex-col p-6 relative w-[30rem] h-fit bg-white">
+
+      <div className="flex flex-col p-6 relative w-[30rem] h-fit bg-white rounded-lg ">
         <div className="flex flex-col justify-center items-center mb-5 relative">
           <div className="relative">
             <img src={Icon} className="w-20 z-10 relative" alt="" />
@@ -40,14 +67,23 @@ const Login = () => {
         </div>
 
         <div className="flex flex-row gap-4 justify-center items-center">
-          <button className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg ">
+          <button
+            className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg"
+            onClick={() => signOAuthExternal("discord")}
+          >
             <img src={discord} className="w-7" alt="Discord" />
           </button>
-          <button className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg ">
+          <button
+            className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg "
+            onClick={() => signOAuthExternal("google")}
+          >
             <img src={google} className="w-7" alt="Google" />
           </button>
-          <button className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg ">
-            <img src={twitter} className="w-7" alt="Twitter" />
+          <button
+            className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg "
+            onClick={() => signOAuthExternal("github")}
+          >
+            <img src={github} className="w-7" alt="Github" />
           </button>
         </div>
 
@@ -62,11 +98,19 @@ const Login = () => {
             type="email"
             className="border border-neutral-400 p-2 rounded-lg"
             placeholder="Enter your email..."
+            value={credentials.email}
+            onChange={(e) =>
+              setCredentials({ ...credentials, email: e.target.value })
+            }
           />
           <input
             type="password"
             className="border border-neutral-400 p-2 rounded-lg"
             placeholder="Enter your password..."
+            value={credentials.password}
+            onChange={(e) =>
+              setCredentials({ ...credentials, password: e.target.value })
+            }
           />
         </div>
         <div className="flex flex-row justify-between items-center my-6 text-sm">
@@ -77,16 +121,26 @@ const Login = () => {
           <p className="underline">Forgot password?</p>
         </div>
         <div className="flex flex-col justify-center items-center">
-          <button className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold">
-            Sign in
+          <button
+            className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold flex justify-center items-center"
+            disabled={!credentials.email || !credentials.password}
+            onClick={signIn}
+          >
+            {confirmation ? (
+              <i className="animate-spin text-2xl">
+                <AiOutlineLoading3Quarters />
+              </i>
+            ) : (
+              "Sign In"
+            )}
           </button>
           <p>
-            Don't have an account yet?{" "}
+            Don't Have an account?,{" "}
             <span
               className="font-bold cursor-pointer"
               onClick={() => navigateToRegister()}
             >
-              Sign up
+              Sign Up
             </span>
           </p>
         </div>

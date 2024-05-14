@@ -3,9 +3,11 @@ import Icon from "../../assets/icon.png";
 import discord from "../../assets/discord.png";
 import google from "../../assets/google.png";
 import twitter from "../../assets/twitter.png";
+import github from "../../assets/github.png";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../database/supabase";
 import Navbar from "../../components/Navbar";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ const Register = () => {
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
+    username: "",
   });
 
   const [confirmation, setConfirmation] = useState(false);
@@ -22,18 +25,31 @@ const Register = () => {
       navigate("/success");
     }
   });
+
   const signUp = async () => {
     try {
+      setConfirmation(true);
+
       await supabase.auth.signUp({
         email: credentials.email,
         password: credentials.password,
+        options: {
+          data: {
+            username: credentials.username,
+          },
+        },
       });
-      setConfirmation(true);
     } catch (error) {
       console.error("Sign up error:", error.message);
       navigate("/");
     }
   };
+
+  async function signOAuthExternal(type) {
+    await supabase.auth.signInWithOAuth({
+      provider: type,
+    });
+  }
 
   function navigateToLogin() {
     navigate("/login");
@@ -48,7 +64,7 @@ const Register = () => {
         src={Icon}
       />
 
-      <div className="flex flex-col p-6 relative w-[30rem] h-fit bg-white">
+      <div className="flex flex-col p-6 relative w-[30rem] h-fit bg-white rounded-lg ">
         <div className="flex flex-col justify-center items-center mb-5 relative">
           <div className="relative">
             <img src={Icon} className="w-20 z-10 relative" alt="" />
@@ -59,14 +75,23 @@ const Register = () => {
         </div>
 
         <div className="flex flex-row gap-4 justify-center items-center">
-          <button className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg ">
+          <button
+            className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg"
+            onClick={() => signOAuthExternal("discord")}
+          >
             <img src={discord} className="w-7" alt="Discord" />
           </button>
-          <button className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg ">
+          <button
+            className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg "
+            onClick={() => signOAuthExternal("google")}
+          >
             <img src={google} className="w-7" alt="Google" />
           </button>
-          <button className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg ">
-            <img src={twitter} className="w-7" alt="Twitter" />
+          <button
+            className="border-blue-600 border-[0.5px] px-10 py-1 rounded-lg "
+            onClick={() => signOAuthExternal("github")}
+          >
+            <img src={github} className="w-7" alt="Github" />
           </button>
         </div>
 
@@ -95,6 +120,15 @@ const Register = () => {
               setCredentials({ ...credentials, password: e.target.value })
             }
           />
+          <input
+            type="text"
+            className="border border-neutral-400 p-2 rounded-lg"
+            placeholder="Enter your username..."
+            value={credentials.username}
+            onChange={(e) =>
+              setCredentials({ ...credentials, username: e.target.value })
+            }
+          />
         </div>
         <div className="flex flex-row justify-between items-center my-6 text-sm">
           <div className="flex flex-row gap-2">
@@ -105,10 +139,21 @@ const Register = () => {
         </div>
         <div className="flex flex-col justify-center items-center">
           <button
-            className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold"
+            className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold flex justify-center items-center"
             onClick={signUp}
+            disabled={
+              !credentials.email ||
+              !credentials.password ||
+              !credentials.username
+            }
           >
-            Sign up
+            {confirmation ? (
+              <i className="animate-spin text-2xl">
+                <AiOutlineLoading3Quarters />
+              </i>
+            ) : (
+              "Sign Up"
+            )}
           </button>
           <p>
             Have an account?,{" "}
