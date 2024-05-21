@@ -6,7 +6,6 @@ import twitter from "../../assets/twitter.png";
 import github from "../../assets/github.png";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../database/supabase";
-import Navbar from "../../components/Navbar";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const Register = () => {
@@ -18,32 +17,10 @@ const Register = () => {
     username: "",
   });
 
+  let { email, password, username } = credentials;
+
   const [confirmation, setConfirmation] = useState(false);
 
-  supabase.auth.onAuthStateChange(async (event) => {
-    if (event === "SIGNED_IN") {
-      navigate("/success");
-    }
-  });
-
-  const signUp = async () => {
-    try {
-      setConfirmation(true);
-
-      await supabase.auth.signUp({
-        email: credentials.email,
-        password: credentials.password,
-        options: {
-          data: {
-            username: credentials.username,
-          },
-        },
-      });
-    } catch (error) {
-      console.error("Sign up error:", error.message);
-      navigate("/");
-    }
-  };
 
   async function signOAuthExternal(type) {
     await supabase.auth.signInWithOAuth({
@@ -55,9 +32,14 @@ const Register = () => {
     navigate("/login");
   }
 
+  function navigateToPostRegister() {
+    navigate("/register/customize", {
+      state: ({ email, password, username } = credentials),
+    });
+  }
+
   return (
     <div className="w-screen min-h-screen max-h-full bg-zinc-800 px-24 py-8 overflow-hidden relative flex justify-center items-center font-comfortaa">
-      <Navbar />
 
       <img
         className="absolute w-[40%] -bottom-28 -left-52 rotate-12 opacity-50"
@@ -140,7 +122,7 @@ const Register = () => {
         <div className="flex flex-col justify-center items-center">
           <button
             className="bg-black w-full p-3 rounded-xl text-white my-3 font-bold flex justify-center items-center"
-            onClick={signUp}
+            onClick={navigateToPostRegister}
             disabled={
               !credentials.email ||
               !credentials.password ||

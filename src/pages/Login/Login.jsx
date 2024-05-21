@@ -6,7 +6,6 @@ import twitter from "../../assets/twitter.png";
 import github from "../../assets/github.png";
 import { useNavigate } from "react-router-dom";
 import supabase from "../../database/supabase";
-import Navbar from "../../components/Navbar";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -49,7 +48,6 @@ const Login = () => {
 
   return (
     <div className="w-screen min-h-screen max-h-full bg-zinc-800 px-24 py-8 overflow-hidden relative flex justify-center items-center font-comfortaa">
-      <Navbar />
 
       <img
         className="absolute w-[40%] -bottom-28 -left-52 rotate-12 opacity-50"

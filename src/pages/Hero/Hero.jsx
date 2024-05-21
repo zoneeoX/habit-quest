@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import rocketIcon from "../../assets/icons8-rocket-96.png";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 import supabase from "../../database/supabase";
 
 const Hero = () => {
@@ -31,8 +30,6 @@ const Hero = () => {
 
   return (
     <div className="w-screen min-h-screen max-h-full bg-zinc-800 text-white px-24 py-8 grid grid-cols-1 place-content-center gap-10 overflow-hidden relative">
-      <Navbar />
-
       <section className="grid grid-cols-1 gap-y-10 relative">
         <h1 className="font-poppins font-extrabold text-7xl md:text-8xl text-start tracking-tighter">
           Compete habits <br></br> with your <br></br>

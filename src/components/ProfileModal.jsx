@@ -3,21 +3,9 @@ import supabase from "../database/supabase";
 import { IoChevronForward } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
-const ProfileModal = () => {
-  const [user, setUser] = useState({});
+const ProfileModal = ({ user }) => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function getUserData() {
-      await supabase.auth.getUser().then((value) => {
-        if (value.data?.user) {
-          setUser(value.data.user);
-        }
-      });
-    }
-
-    getUserData();
-  }, []);
 
   async function signOut() {
     try {

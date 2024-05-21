@@ -30,6 +30,7 @@ const Navbar = () => {
     setOpenModal((prevState) => !prevState);
   }
 
+
   return (
     <nav className="w-screen fixed left-0 top-0 px-24 py-8 z-50 text-white font-poppins flex flex-row justify-between">
       <section
@@ -44,14 +45,17 @@ const Navbar = () => {
         onClick={() => openProfileModal()}
       >
         {Object.keys(user).length !== 0 && (
-          <div className="bg-neutral-500 p-4 rounded-full">
-            <i className="text-2xl">
+          <div className="bg-neutral-500 p-4 rounded-full relative overflow-hidden w-14 h-14 border-[0.5px] border-white/50">
+            {/* <i className="text-2xl">
               <IoPersonSharp />
-            </i>
+            </i> */}
+            <img src={user?.user_metadata.profile_picture} className="object-cover inset-0 absolute" alt="" />
           </div>
         )}
 
-        {openModal && Object.keys(user).length !== 0 && <ProfileModal />}
+        {openModal && Object.keys(user).length !== 0 && (
+          <ProfileModal user={user} />
+        )}
       </section>
     </nav>
   );

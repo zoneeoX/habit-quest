@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
+import {
+  clearInterval,
+  setInterval,
+  setTimeout,
+  clearTimeout,
+} from "worker-timers";
 
 const SuccessPage = () => {
-  const navigate = useNavigate();
   const [countdown, setCountdown] = useState(5);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const interval = setInterval(() => {
       if (countdown > 0) {
         setCountdown(countdown - 1);
       } else {
+        clearInterval(interval);
         navigate("/dashboard");
+        window.location.reload();
       }
     }, 1000);
 
-    return () => clearTimeout(timer);
-  }, [countdown, navigate]);
+    return () => clearInterval(interval);
+  }, [countdown]);
 
   return (
     <div className="bg-zinc-800 flex justify-center items-center text-7xl text-white font-poppins font-semibold w-screen h-screen flex-col">
