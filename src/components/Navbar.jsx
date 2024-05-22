@@ -1,25 +1,23 @@
 import React, { useEffect, useState } from "react";
 import icon from "../assets/icon.png";
 import { useNavigate } from "react-router-dom";
-import { IoPersonSharp } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
+
 import supabase from "../database/supabase";
 import ProfileModal from "./ProfileModal";
+import { fetchUser } from "../feature/Slices/userSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { user_information } = useSelector((state) => state.user);
+
   const [openModal, setOpenModal] = useState(false);
-  const [user, setUser] = useState({});
+  // const [user, setUser] = useState({});
 
   useEffect(() => {
-    async function getUserData() {
-      await supabase.auth.getUser().then((value) => {
-        if (value.data?.user) {
-          setUser(value.data.user);
-        }
-      });
-    }
-
-    getUserData();
+    dispatch(fetchUser());
   }, []);
 
   function navigateToHome() {
@@ -29,7 +27,6 @@ const Navbar = () => {
   function openProfileModal() {
     setOpenModal((prevState) => !prevState);
   }
-
 
   return (
     <nav className="w-screen fixed left-0 top-0 px-24 py-8 z-50 text-white font-poppins flex flex-row justify-between">
@@ -44,17 +41,21 @@ const Navbar = () => {
         className="flex flex-row items-center gap-2 cursor-pointer"
         onClick={() => openProfileModal()}
       >
-        {Object.keys(user).length !== 0 && (
+        {Object.keys(user_information).length !== 0 && (
           <div className="bg-neutral-500 p-4 rounded-full relative overflow-hidden w-14 h-14 border-[0.5px] border-white/50">
             {/* <i className="text-2xl">
               <IoPersonSharp />
             </i> */}
-            <img src={user?.user_metadata.profile_picture} className="object-cover inset-0 absolute" alt="" />
+            <img
+              src={user_information?.user_metadata.profile_picture}
+              className="object-cover inset-0 absolute"
+              alt=""
+            />
           </div>
         )}
 
-        {openModal && Object.keys(user).length !== 0 && (
-          <ProfileModal user={user} />
+        {openModal && Object.keys(user_information).length !== 0 && (
+          <ProfileModal user={user_information} />
         )}
       </section>
     </nav>
