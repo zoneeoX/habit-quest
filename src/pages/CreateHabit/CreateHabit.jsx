@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
 import supabase from "../../database/supabase";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 const CreateHabit = () => {
   const navigate = useNavigate();
@@ -26,17 +27,64 @@ const CreateHabit = () => {
     getUserData();
   }, []);
 
+  async function createHabitsToUser(user, users_habits) {
+    //reference
+    //user ny itu user.email dibawah
+    //users_habits param itu the fkin user habits
+
+    const { data, error } = await supabase
+      .from("users_habits")
+      .select()
+      .eq("user", user);
+
+    if (data.length === 0) {
+      try {
+        await supabase
+          .from("users_habits")
+          .insert({
+            user: user,
+            users_habits: users_habits,
+          })
+          .single();
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      let currentUserHabits = data[0]?.users_habits;
+      let mergedUserHabits = [...users_habits, ...currentUserHabits];
+
+      try {
+        await supabase
+          .from("users_habits")
+          .update({ users_habits: mergedUserHabits })
+          .eq("user", user);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+
   async function createHabit() {
+    let usersArray = [];
+
     try {
       const newUser = {
+        uuid: uuidv4(),
         timestamp: new Date().toISOString(),
-        total_habit: 0,
-        email: user.email,
-        username: user.user_metadata.username,
-        profile_picture: user.user_metadata.profile_picture,
-      };
 
-      let usersArray = [];
+        habit_information: {
+          habit_category: habit.category,
+          habit_name: habit.name,
+          habit_description: habit.description,
+          total_habit: 0,
+        },
+
+        user_information: {
+          profile_picture: user.user_metadata.profile_picture,
+          email: user.email,
+          username: user.user_metadata.username,
+        },
+      };
 
       if (Array.isArray(habit.users)) {
         usersArray = [...habit.users, newUser];
@@ -56,6 +104,8 @@ const CreateHabit = () => {
           users: usersArray,
         })
         .single();
+
+      createHabitsToUser(user.email, usersArray);
 
       navigate(-1);
     } catch (error) {

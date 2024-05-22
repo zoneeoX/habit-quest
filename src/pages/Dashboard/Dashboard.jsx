@@ -11,66 +11,59 @@ const Dashboard = () => {
     await supabase.auth.getUser().then((value) => {
       if (value.data?.user) {
         setUser(value.data.user);
+
+        getHabits(value.data.user.email);
       }
     });
   }
 
-  async function getHabits() {
+  async function getHabits(email) {
     try {
       const { data, error } = await supabase
-        .from("habits")
+        .from("users_habits")
         .select("*")
-        .limit(10);
+        .eq("user", email);
 
       if (data != null) {
-        setHabitData(data);
+        setHabitData(data[0].users_habits);
       }
     } catch (error) {
       alert(error.message);
     }
   }
 
-  // async function createHabit() {
-  //   try {
-  //     const { data, error } = await supabase.from("habits").insert({
-  //       name:
-  //     });
-
-  //     if (data != null) {
-  //       setHabitData(data);
-  //     }
-  //   } catch (error) {
-  //     alert(error.message);
-  //   }
-  // }
-
   useEffect(() => {
     getUserData();
-    getHabits();
   }, []);
+
   console.log(habitData);
 
   // const formatEmail = (email) => {
   //   return email?.replace(/@.*/, "");
   // };
 
-  //Name
-  //Description
-  //Category
-
   return (
     <>
       <div className="w-screen min-h-screen max-h-full bg-zinc-800 text-white px-24 py-48 overflow-hidden">
         <div className="grid lg:grid-cols-3 grid-cols-1 gap-[5rem] max-w-6xl mx-auto">
+          <h1 className="font-poppins font-bold text-4xl col-span-3 bg-blue-700 px-2 rounded-full w-fit">Your habits!</h1>
           <GroupExplorer />
-          {habitData.map(({ name, description, category }, i) => {
+          {habitData?.map(({ habit_information }, i) => {
+            const {
+              habit_category,
+              habit_name,
+              habit_description,
+              total_habit,
+            } = habit_information;
+
             return (
               <div key={i}>
-              <HabitCard
-                name={name}
-                description={description}
-                category={category}
-              />
+                <HabitCard
+                  name={habit_name}
+                  description={habit_description}
+                  category={habit_category}
+                  total_habit={total_habit}
+                />
               </div>
             );
           })}

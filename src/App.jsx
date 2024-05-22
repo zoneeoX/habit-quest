@@ -14,7 +14,8 @@ import Login from "./pages/Login/Login.jsx";
 import SuccessPage from "./pages/SuccessPage/SuccessPage.jsx";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ErrorPage from "./pages/Error/ErrorPage.jsx";
-import CreateHabit from "./pages/CreateHabit/CreateHabit.jsx"
+import CreateHabit from "./pages/CreateHabit/CreateHabit.jsx";
+import DiscoverPage from "./pages/DiscoverPage/DiscoverPage.jsx";
 
 export function App() {
   const router = createBrowserRouter(
@@ -27,6 +28,7 @@ export function App() {
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/dashboard/new" element={<CreateHabit />} />
+        <Route path="/dashboard/discover" element={<DiscoverPage />} />
       </Route>
     )
   );
