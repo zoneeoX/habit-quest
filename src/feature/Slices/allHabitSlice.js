@@ -11,8 +11,7 @@ const initialState = {
 
 export const fetchAllHabit = createAsyncThunk(
   "habit/fetchAllHabit",
-  async (user) => {
-    console.log(user);
+  async () => {
     try {
       const response = await supabase.from("habits").select("*");
 

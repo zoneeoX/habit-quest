@@ -14,7 +14,6 @@ const Navbar = () => {
   const { user_information } = useSelector((state) => state.user);
 
   const [openModal, setOpenModal] = useState(false);
-  // const [user, setUser] = useState({});
 
   useEffect(() => {
     dispatch(fetchUser());
@@ -41,20 +40,17 @@ const Navbar = () => {
         className="flex flex-row items-center gap-2 cursor-pointer"
         onClick={() => openProfileModal()}
       >
-        {Object.keys(user_information).length !== 0 && (
+        {user_information && Object.keys(user_information)?.length !== 0 && (
           <div className="bg-neutral-500 p-4 rounded-full relative overflow-hidden w-14 h-14 border-[0.5px] border-white/50">
-            {/* <i className="text-2xl">
-              <IoPersonSharp />
-            </i> */}
             <img
               src={user_information?.user_metadata.profile_picture}
-              className="object-cover inset-0 absolute"
+              className="object-cover inset-0 absolute w-full h-full"
               alt=""
             />
           </div>
         )}
 
-        {openModal && Object.keys(user_information).length !== 0 && (
+        {openModal && user_information && Object.keys(user_information)?.length !== 0 && (
           <ProfileModal user={user_information} />
         )}
       </section>

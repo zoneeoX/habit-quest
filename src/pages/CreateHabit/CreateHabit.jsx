@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../../components/Navbar";
-import supabase from "../../database/supabase";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createHabit,
+  createHabitToUser,
+} from "../../feature/Slices/createHabitSlice";
 
 const CreateHabit = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { user_information } = useSelector((state) => state.user);
 
   const [habit, setHabit] = useState({
     category: "",
@@ -13,58 +19,8 @@ const CreateHabit = () => {
     description: "",
   });
 
-  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    async function getUserData() {
-      await supabase.auth.getUser().then((value) => {
-        if (value.data?.user) {
-          setUser(value.data.user);
-        }
-      });
-    }
-
-    getUserData();
-  }, []);
-
-  async function createHabitsToUser(user, users_habits) {
-    //reference
-    //user ny itu user.email dibawah
-    //users_habits param itu the fkin user habits
-
-    const { data, error } = await supabase
-      .from("users_habits")
-      .select()
-      .eq("user", user);
-
-    if (data.length === 0) {
-      try {
-        await supabase
-          .from("users_habits")
-          .insert({
-            user: user,
-            users_habits: users_habits,
-          })
-          .single();
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      let currentUserHabits = data[0]?.users_habits;
-      let mergedUserHabits = [...users_habits, ...currentUserHabits];
-
-      try {
-        await supabase
-          .from("users_habits")
-          .update({ users_habits: mergedUserHabits })
-          .eq("user", user);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  }
-
-  async function createHabit() {
+  async function initiateCreateHabit() {
     let usersArray = [];
 
     try {
@@ -79,10 +35,10 @@ const CreateHabit = () => {
           total_habit: 0,
         },
 
-        user_information: {
-          profile_picture: user.user_metadata.profile_picture,
-          email: user.email,
-          username: user.user_metadata.username,
+        user_profile: {
+          profile_picture: user_information.user_metadata.profile_picture,
+          email: user_information.email,
+          username: user_information.user_metadata.username,
         },
       };
 
@@ -95,17 +51,13 @@ const CreateHabit = () => {
         usersArray.push(newUser);
       }
 
-      await supabase
-        .from("habits")
-        .insert({
-          category: habit.category,
-          name: habit.name,
-          description: habit.description,
-          users: usersArray,
+      dispatch(createHabit({ habit, usersArray, uuid: newUser.uuid }));
+      dispatch(
+        createHabitToUser({
+          user: user_information.email,
+          users_habits: usersArray,
         })
-        .single();
-
-      createHabitsToUser(user.email, usersArray);
+      );
 
       navigate(-1);
     } catch (error) {
@@ -193,7 +145,7 @@ const CreateHabit = () => {
 
             <button
               className="bg-blue-700 p-2 font-poppins font-bold rounded-lg"
-              onClick={createHabit}
+              onClick={initiateCreateHabit}
             >
               Create habit!
             </button>

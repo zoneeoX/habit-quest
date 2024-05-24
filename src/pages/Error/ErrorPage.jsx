@@ -31,7 +31,7 @@ export default function ErrorPage() {
         </button>
       </div>
       <p className="mt-10 font-comfortaa text-2xl text-balance md:text-end">
-        An error has occured, maybe something went wrong up in the url.
+        An error has occured, maybe something went wrong???, report the error code
       </p>
     </section>
   );

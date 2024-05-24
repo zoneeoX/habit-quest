@@ -10,6 +10,7 @@ const Dashboard = () => {
   const { user_information, isLoading } = useSelector((state) => state.user);
   const { user_habit } = useSelector((state) => state.user_habit);
 
+
   useEffect(() => {
     let timeoutId;
 
@@ -27,11 +28,11 @@ const Dashboard = () => {
       <div className="w-screen min-h-screen max-h-full bg-zinc-800 text-white px-24 py-48 overflow-hidden">
         {!isLoading ? (
           <div className="grid lg:grid-cols-3 grid-cols-1 gap-[5rem] max-w-6xl mx-auto">
-            <h1 className="font-poppins font-bold text-4xl col-span-3 bg-blue-700 px-2 rounded-full w-fit">
+            <h1 className="font-poppins font-bold text-4xl lg:col-span-3 bg-blue-700 px-2 rounded-full w-fit">
               Your habits!
             </h1>
             <GroupExplorer />
-            {user_habit.users_habits?.map(({ habit_information }, i) => {
+            {user_habit?.users_habits?.map(({ habit_information }, i) => {
               const {
                 habit_category,
                 habit_name,

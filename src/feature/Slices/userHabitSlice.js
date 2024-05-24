@@ -6,19 +6,19 @@ const initialState = {
   isLoading: false,
   isError: false,
   user_habit: [],
+  user_habit_uuids: [], // New state property to hold UUIDs
 };
 
 export const fetchUserHabit = createAsyncThunk(
   "habit/fetchUserHabit",
   async (user) => {
-    console.log(user)
     try {
       const response = await supabase
         .from("users_habits")
         .select("*")
         .eq("user", user);
 
-      return response.data[0]
+      return response.data[0];
     } catch (error) {
       console.error("Error fetching data: ", error);
       throw error;
@@ -37,6 +37,11 @@ const userHabitSlice = createSlice({
       state.isLoading = false;
       state.isError = false;
       state.user_habit = action.payload;
+      
+      if (action.payload && action.payload.users_habits) {
+        const uuids = action.payload.users_habits.map((habit) => habit.uuid);
+        state.user_habit_uuids = uuids;
+      }
     });
     builder.addCase(fetchUserHabit.rejected, (state, action) => {
       state.isLoading = false;
@@ -46,6 +51,7 @@ const userHabitSlice = createSlice({
 });
 
 export default userHabitSlice.reducer;
+
 
 // async function getHabits(email) {
 //     try {

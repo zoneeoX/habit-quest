@@ -22,11 +22,14 @@ const DiscoverPage = () => {
         <h1 className="font-poppins font-bold text-4xl bg-blue-700 rounded-full px-4 text-center w-fit lg:col-span-3">
           Discover habit groups!
         </h1>
-        {all_habit?.map(({ category, name, description }, i) => (
+        {all_habit?.map(({ uuid, category, name, description, users }, i) => (
           <HabitDiscoverCard
+            key={i}
             category={category}
             name={name}
             description={description}
+            uuid={uuid}
+            users={users}
           />
         ))}
       </div>
