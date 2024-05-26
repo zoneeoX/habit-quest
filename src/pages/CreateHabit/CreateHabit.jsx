@@ -55,7 +55,7 @@ const CreateHabit = () => {
       dispatch(
         createHabitToUser({
           user: user_information.email,
-          users_habits: usersArray,
+          users_habits: newUser,
         })
       );
 

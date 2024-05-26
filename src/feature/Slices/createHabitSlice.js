@@ -11,8 +11,7 @@ const initialState = {
 export const createHabitToUser = createAsyncThunk(
   "habit/create_user",
   async ({ user, users_habits }) => {
-    console.log("habit/create_user : ", user, users_habits);
-
+    console.log(user, users_habits);
     try {
       const { data, error } = await supabase
         .from("users_habits")
@@ -24,12 +23,12 @@ export const createHabitToUser = createAsyncThunk(
           .from("users_habits")
           .insert({
             user: user,
-            users_habits: users_habits,
+            users_habits: [users_habits],
           })
           .single();
       } else {
         let currentUserHabits = data[0]?.users_habits;
-        let mergedUserHabits = [...users_habits, ...currentUserHabits];
+        let mergedUserHabits = [users_habits, ...currentUserHabits];
 
         await supabase
           .from("users_habits")
@@ -64,6 +63,37 @@ export const createHabit = createAsyncThunk(
   }
 );
 
+export const editHabit = createAsyncThunk(
+  "habit/append",
+  async ({ uuid, newUser }) => {
+    try {
+      const { data, error } = await supabase
+        .from("habits")
+        .select("*")
+        .eq("uuid", uuid);
+
+      if (data) {
+        console.log(data);
+        let currentUsersHabit = data[0].users;
+        let mergedUserHabits = [...currentUsersHabit, newUser];
+
+        await supabase
+          .from("habits")
+          .update({ users: mergedUserHabits })
+          .eq("uuid", uuid);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+
+    // try {
+    //   await supabase.from("habits").update({
+    //     users: "",
+    //   }).eq("uuid", uuid);
+    // } catch (error) {}
+  }
+);
+
 const createHabitSlice = createSlice({
   name: "create_habit",
   initialState,
@@ -95,6 +125,21 @@ const createHabitSlice = createSlice({
         state.isSuccess = true;
       })
       .addCase(createHabitToUser.rejected, (state) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+      })
+      .addCase(editHabit.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+      })
+      .addCase(editHabit.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+      })
+      .addCase(editHabit.rejected, (state) => {
         state.isLoading = false;
         state.isError = true;
         state.isSuccess = false;
