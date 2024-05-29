@@ -6,7 +6,7 @@ const initialState = {
   isLoading: false,
   isError: false,
   user_habit: [],
-  user_habit_uuids: [], // New state property to hold UUIDs
+  user_habit_uuids: [],
 };
 
 export const fetchUserHabit = createAsyncThunk(

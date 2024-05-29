@@ -19,7 +19,6 @@ const CreateHabit = () => {
     description: "",
   });
 
-
   async function initiateCreateHabit() {
     let usersArray = [];
 
@@ -27,12 +26,15 @@ const CreateHabit = () => {
       const newUser = {
         uuid: uuidv4(),
         timestamp: new Date().toISOString(),
+        lastCompletionDate: "",
 
         habit_information: {
           habit_category: habit.category,
           habit_name: habit.name,
           habit_description: habit.description,
           total_habit: 0,
+          exp_habit: 0,
+          level_habit: 1,
         },
 
         user_profile: {

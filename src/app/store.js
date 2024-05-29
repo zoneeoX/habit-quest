@@ -2,8 +2,9 @@ import { configureStore } from "@reduxjs/toolkit";
 import uuidReducer from "../feature/Slices/uuidSlice";
 import userReducer from "../feature/Slices/userSlice";
 import userHabitReducer from "../feature/Slices/userHabitSlice";
-import allHabitReducer from "../feature/Slices/allHabitSlice"
-import createHabitReducer from "../feature/Slices/createHabitSlice"
+import allHabitReducer from "../feature/Slices/allHabitSlice";
+import createHabitReducer from "../feature/Slices/createHabitSlice";
+import completeHabitReducer from "../feature/Slices/completeHabitSlice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     user: userReducer,
     user_habit: userHabitReducer,
     all_habit: allHabitReducer,
-    create_habit: createHabitReducer
+    create_habit: createHabitReducer,
+    complete_habit: completeHabitReducer,
   },
 });

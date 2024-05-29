@@ -12,7 +12,6 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user_habit_uuids } = useSelector((state) => state.user_habit);
   const { user_information } = useSelector((state) => state.user);
   const isJoined = users.some(
     (user) => user.user_profile.email === user_information.email
@@ -22,12 +21,15 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
     const newUser = {
       uuid: uuid,
       timestamp: new Date().toISOString(),
+      lastCompletionDate: "",
 
       habit_information: {
         habit_category: category,
         habit_name: name,
         habit_description: description,
         total_habit: 0,
+        exp_habit: 0,
+        level_habit: 0,
       },
 
       user_profile: {

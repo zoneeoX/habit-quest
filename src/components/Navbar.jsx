@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import icon from "../assets/icon.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
-import supabase from "../database/supabase";
 import ProfileModal from "./ProfileModal";
 import { fetchUser } from "../feature/Slices/userSlice";
 

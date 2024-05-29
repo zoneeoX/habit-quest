@@ -73,7 +73,6 @@ export const editHabit = createAsyncThunk(
         .eq("uuid", uuid);
 
       if (data) {
-        console.log(data);
         let currentUsersHabit = data[0].users;
         let mergedUserHabits = [...currentUsersHabit, newUser];
 

@@ -5,10 +5,6 @@ import { fetchAllHabit } from "../../feature/Slices/allHabitSlice";
 import { IoIosArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-//gabung user uuid habits jadi 1 array
-//pass in ke discovery page
-//compare kalo uuid(gabung) ada yang sama ato kaga
-//kalo iya button disable
 
 const DiscoverPage = () => {
   const dispatch = useDispatch();
