@@ -16,8 +16,10 @@ const HabitCard = ({
   dispatch,
 }) => {
   const { user_information } = useSelector((state) => state.user);
+
   const [remainingHours, setRemainingHours] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const weeklyHabits = Array.from({ length: 7 }, () => false);
 
@@ -69,17 +71,21 @@ const HabitCard = ({
     }
   };
 
-  const completeHabit = () => {
+  const completeHabit = async () => {
     const currentDate = new Date();
     const readableDate = currentDate.toISOString();
 
-    dispatch(
+    setIsLoading(true);
+
+    await dispatch(
       updateLastCompletionDate({
         uuid,
         readableDate,
         user: user_information.email,
       })
     );
+
+    setIsLoading(false);
   };
 
   return (
@@ -130,7 +136,7 @@ const HabitCard = ({
           <div className="text-center mt-2">
             <button
               className="bg-green-700 rounded-lg font-poppins p-1 cursor-not-allowed w-full flex flex-col justify-center items-center"
-              disabled  
+              disabled
             >
               Habit Completed
               <span className="text-sm opacity-50">
@@ -141,9 +147,15 @@ const HabitCard = ({
         ) : (
           <button
             onClick={completeHabit}
-            className="bg-blue-700 rounded-lg font-poppins p-1 mt-2 flex flex-col justify-center items-center"
+            className="bg-blue-700 rounded-lg font-poppins p-1 mt-2 flex flex-col justify-center items-center hover:bg-blue-600 transition"
           >
-            Complete habit
+            {!isLoading ? (
+              "Complete Habit"
+            ) : (
+              <i className="animate-spin">
+                <AiOutlineLoading3Quarters />
+              </i>
+            )}
             <span className="text-sm opacity-50">25+ xp</span>
           </button>
         )}

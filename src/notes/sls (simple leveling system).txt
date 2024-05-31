@@ -15,7 +15,7 @@ q: then how do i get all the total exp?
 a: we just level * 100
 
 q: what if the level is at 75 but the level is at 1 for example
-a: we just still do (level * max_exp) + current_exp, then we got for example 100 + 75 = 175
+a: we just still do (level * max_exp) + current_exp, then we got for example (1 * 100) + 75 = 175
 
 q: why is it like this?
 a: at the time there was a problem where the exp bar would be like this, i would adjust the exp bar by the amount of exp

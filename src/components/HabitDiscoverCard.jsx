@@ -29,7 +29,7 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
         habit_description: description,
         total_habit: 0,
         exp_habit: 0,
-        level_habit: 0,
+        level_habit: 1,
       },
 
       user_profile: {
@@ -80,8 +80,8 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
         </div>
         <div className="flex flex-row items-center justify-start ">
           {users?.slice(0, 9).map(({ user_profile }, i) => (
-            <div key={i} className="-ml-7 relative left-6">
-              <div className="bg-zinc-700 rounded-full mt-2 w-12 h-12 items-center flex justify-center ">
+            <div key={i} className="-ml-7 relative left-6 hover:left-10 hover:mr-12 transition-all ease-in-out w-fit duration-300">
+              <div className="bg-zinc-700 rounded-full mt-2 w-12 h-12 items-center flex justify-center hover:bg-white/50">
                 <div className="w-10 h-10 rounded-full relative overflow-hidden ">
                   <img
                     src={user_profile.profile_picture}
