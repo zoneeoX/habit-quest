@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { IoMdPersonAdd } from "react-icons/io";
 import { IoPeopleSharp } from "react-icons/io5";
@@ -7,10 +7,15 @@ import {
   editHabit,
 } from "../feature/Slices/createHabitSlice";
 import { useNavigate } from "react-router-dom";
+import Info from "./Info";
+import Leaderboard from "./Leaderboard";
+import Recent from "./Recent";
 
 const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [activeId, setActiveId] = useState(0);
 
   const { user_information } = useSelector((state) => state.user);
   const isJoined = users.some(
@@ -22,6 +27,7 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
       uuid: uuid,
       timestamp: new Date().toISOString(),
       lastCompletionDate: "",
+      completionDateArr: [],
 
       habit_information: {
         habit_category: category,
@@ -62,17 +68,60 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
   //   return user_profile.profile_picture;
   // });
 
+  const options = [
+    {
+      name: "Info",
+      component: Info,
+      id: 0,
+      props: { uuid, users, description },
+    },
+    {
+      name: "Leaderboard",
+      component: Leaderboard,
+      id: 1,
+      props: { uuid, users, description },
+    },
+    {
+      name: "Recent",
+      component: Recent,
+      id: 2,
+      props: { uuid, users, description },
+    },
+  ];
+
   return (
     <div>
-      <div className="bg-zinc-700 h-[35vh] p-4 rounded-xl font-comfortaa relative">
+      <div className="bg-zinc-700 min-h-[35vh] p-4 rounded-xl font-comfortaa relative">
         <div className="flex flex-row justify-between items-center">
-          <div>
-            <h1 className="font-poppins font-bold text-2xl">{category}</h1>
-            <p className="text-lg">{name}</p>
-          </div>
+          <h1 className="text-xl font-poppins font-semibold">{name}</h1>
+          <p className="bg-rose-700 w-fit px-2 rounded-full">Hard</p>
         </div>
-        <div className="w-full h-[0.5px] bg-white opacity-50 my-2" />
-        <div className="flex flex-row items-center justify-start gap-2">
+
+        <ul className="flex flex-row justify-between mt-2 bg-zinc-600  px-4 py-1 rounded-full">
+          {options.map(({ name, component, id }) => (
+            <li className="flex" key={id}>
+              <h2
+                onClick={() => {
+                  setActiveId(id);
+                }}
+                className={`cursor-pointer hover:underline ${
+                  activeId == id ? `underline` : ""
+                }`}
+              >
+                {name}
+              </h2>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-4 px-2">
+          {options.map(({ component: Component, id, props }) => (
+            activeId === id && <Component key={id} {...props} />
+          ))}
+        </div>
+
+        {/* <div className="w-full h-[0.5px] bg-white opacity-50 my-2" /> */}
+        {/* <div className="flex flex-row items-center justify-start gap-2">
           <i className="text-2xl">
             <IoPeopleSharp />
           </i>
@@ -97,7 +146,7 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
             Group description
           </h2>
           <p className="text-sm">{description}</p>
-        </div>
+        </div> */}
         {!isJoined && (
           <button
             className="flex-row gap-2 absolute bottom-5 right-5 mx-auto flex justify-center items-center bg-blue-700 hover:bg-blue-800 transition w-fit px-4 rounded-full text-lg py-1 font-poppins font-semibold"

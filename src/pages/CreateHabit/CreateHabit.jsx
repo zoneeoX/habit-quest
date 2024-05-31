@@ -27,6 +27,7 @@ const CreateHabit = () => {
         uuid: uuidv4(),
         timestamp: new Date().toISOString(),
         lastCompletionDate: "",
+        completionDateArr: [],
 
         habit_information: {
           habit_category: habit.category,
