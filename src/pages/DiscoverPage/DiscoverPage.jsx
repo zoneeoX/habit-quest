@@ -20,12 +20,13 @@ const DiscoverPage = () => {
   }
 
   return (
-    <div className="w-screen min-h-screen max-h-full bg-zinc-800 text-white px-24 py-48 overflow-hidden font-comfortaa">
+    <div className="w-screen min-h-screen max-h-full bg-slate-900 text-white px-24 py-48 overflow-hidden font-comfortaa">
+      
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-[5rem] max-w-6xl mx-auto mt-10">
-        <div className="lg:col-span-3 bg-blue-700 w-full rounded-full p-2">
+        <div className="lg:col-span-3 bg-slate-900 border-slate-500/50 border w-full rounded-full p-2">
           <div className="flex flex-row items-center px-4">
             <h1
-              className="font-poppins cursor-pointer text-4xl font-bold bg-blue-500 text-white p-2 rounded-full"
+              className="font-poppins cursor-pointer text-4xl font-bold bg-slate-800 hover:bg-slate-700 transition border border-slate-500/50 text-white p-2 rounded-full"
               onClick={goBack}
             >
               <i>

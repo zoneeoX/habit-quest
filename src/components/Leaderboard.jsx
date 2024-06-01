@@ -6,8 +6,8 @@ const Leaderboard = ({ users }) => {
   );
 
   return (
-    <div className="overflow-x-auto overflow-y-scroll">
-      <table className="min-w-full divide-y divide-gray-200 bg-zinc-700 rounded-lg">
+    <div className="overflow-x-auto overflow-y-scroll ">
+      <table className="min-w-full divide-y divide-gray-200 bg-slate-800 rounded-lg">
         <thead>
           <tr>
             <th
@@ -20,7 +20,7 @@ const Leaderboard = ({ users }) => {
         </thead>
         <tbody className="divide-y divide-gray-200">
           {sortedUsers.map(({ user_profile, habit_information }, i) => (
-            <tr key={i} className="bg-zinc-700">
+            <tr key={i}>
               <td className="px-4 py-2 flex flex-row items-center gap-2">
                 <img
                   src={user_profile?.profile_picture}

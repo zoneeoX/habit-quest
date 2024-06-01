@@ -91,13 +91,13 @@ const HabitDiscoverCard = ({ uuid, category, name, description, users }) => {
 
   return (
     <div>
-      <div className="bg-zinc-700 min-h-[35vh] p-4 rounded-xl font-comfortaa relative">
+      <div className="bg-slate-800 min-h-[35vh] p-4 rounded-xl font-comfortaa relative border-slate-500/50 border">
         <div className="flex flex-row justify-between items-center">
           <h1 className="text-xl font-poppins font-semibold">{name}</h1>
-          <p className="bg-rose-700 w-fit px-2 rounded-full">Hard</p>
+          <p className="bg-rose-700/75 w-fit px-2 rounded-full">Hard</p>
         </div>
 
-        <ul className="flex flex-row justify-between mt-2 bg-zinc-600  px-4 py-1 rounded-full">
+        <ul className="flex flex-row justify-between mt-2 bg-slate-800 border border-slate-500/50  px-4 py-1 rounded-full">
           {options.map(({ name, component, id }) => (
             <li className="flex" key={id}>
               <h2

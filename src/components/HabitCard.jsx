@@ -90,7 +90,7 @@ const HabitCard = ({
 
   return (
     <div>
-      <div className="bg-zinc-700 min-h-[44vh] p-4 rounded-xl font-comfortaa flex flex-col justify-between">
+      <div className="bg-slate-800 border-slate-500/50 border min-h-[44vh] p-4 rounded-xl font-comfortaa flex flex-col justify-between">
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-col justify-between truncate">
             <p className="text-2xl font-poppins font-semibold w-[18ch]">
@@ -100,7 +100,7 @@ const HabitCard = ({
           </div>
         </div>
 
-        <div className="mt-4 bg-zinc-600 p-4 rounded-lg">
+        <div className="mt-4 bg-slate-800 border border-slate-500/50 p-4 rounded-lg">
           <div className="flex flex-col gap-2">
             <h1 className="text-lg">Habit Weekly (progress)</h1>
             <div className="flex flex-row gap-2">
@@ -135,7 +135,7 @@ const HabitCard = ({
         {isComplete ? (
           <div className="text-center mt-2">
             <button
-              className="bg-green-700 rounded-lg font-poppins p-1 cursor-not-allowed w-full flex flex-col justify-center items-center"
+              className="bg-slate-700 rounded-lg font-poppins p-1 cursor-not-allowed w-full flex flex-col justify-center items-center"
               disabled
             >
               Habit Completed
@@ -147,7 +147,7 @@ const HabitCard = ({
         ) : (
           <button
             onClick={completeHabit}
-            className="bg-blue-700 rounded-lg font-poppins p-1 mt-2 flex flex-col justify-center items-center hover:bg-blue-600 transition"
+            className="bg-slate-700 rounded-lg font-poppins p-1 mt-2 flex flex-col justify-center items-center hover:bg-blue-600 transition"
           >
             {!isLoading ? (
               "Complete Habit"

@@ -15,9 +15,9 @@ const GroupExplorer = () => {
   }
 
   return (
-    <div className="flex flex-col gap-6 font-poppins font-bold">
+    <div className="flex flex-col gap-6 font-poppins font-bold justify-between">
       <div
-        className="bg-zinc-700 h-48 g flex flex-col gap-6 justify-center items-center rounded-xl shadow-lg border border-white/50 hover:bg-zinc-600 transition-all cursor-pointer"
+        className="bg-slate-800/75 h-48 g flex flex-col gap-6 justify-center items-center rounded-xl shadow-lg border border-slate-500 hover:bg-slate-600 transition-all cursor-pointer"
         onClick={navigateDiscover}
       >
         <i className="text-black bg-white p-2 rounded-full">
@@ -27,7 +27,7 @@ const GroupExplorer = () => {
       </div>
       <div className="bg-white w-full h-[0.5px] opacity-50" />
       <div
-        className="bg-zinc-700 h-48 g flex flex-col gap-6 justify-center items-center rounded-xl shadow-lg border border-white/50 hover:bg-zinc-600 transition-all cursor-pointer"
+        className="bg-slate-800/75 h-48 g flex flex-col gap-6 justify-center items-center rounded-xl shadow-lg border border-slate-500 hover:bg-slate-600 transition-all cursor-pointer"
         onClick={navigateNewGroup}
       >
         <i className="text-black bg-white p-2 rounded-full">
