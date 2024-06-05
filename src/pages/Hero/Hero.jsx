@@ -51,12 +51,12 @@ const Hero = () => {
         <div className="absolute bg-rose-600/50 w-[10vw] h-[20vh] skew-y-12 blur-3xl left-52 top-72" />
       </div>
       <section className="grid grid-cols-1 gap-y-10 relative">
-        <h1 className="font-poppins font-extrabold text-7xl md:text-8xl text-start tracking-tighter">
+        <h1 className="font-poppins font-extrabold text-6xl text-start md:text-start md:text-8xl tracking-tighter">
           Compete habits <br></br> with your <br></br>
           <span className="text-secondary">friends!</span>
         </h1>
 
-        <p className="font-comfortaa text-2xl md:text-3xl text-balance">
+        <p className="font-comfortaa text-xl text-center md:text-start md:text-3xl text-balance">
           Compete with <span className="text-secondary">friends</span>, create
           or join groups,
           <br />

@@ -33,12 +33,10 @@ const Dashboard = () => {
           background-size: 40px 40px;
         }
       `}</style>
-      <div className="w-screen min-h-screen max-h-full bg-slate-900 text-white px-24 py-48 overflow-hidden grid-background">
+      <div className="w-screen min-h-screen max-h-full bg-slate-900 text-white py-48 overflow-hidden grid-background">
         {!isLoading ? (
-          <div className="grid lg:grid-cols-3 grid-cols-1 gap-[5rem] max-w-6xl mx-auto">
-            <h1 className="font-poppins font-bold text-4xl bg-slate-600/50 p-2 px-6 lg:col-span-3 border-slate-500 border rounded-full w-fit">
-              Dashboard
-            </h1>
+          <div className="grid lg:grid-cols-3 grid-cols-1 backdrop-blur-sm gap-[5rem] max-w-6xl mx-auto bg-slate-800/50 p-10 rounded-xl border border-neutral-100/50">
+           
             <GroupExplorer />
             {user_habit?.users_habits?.map(
               (

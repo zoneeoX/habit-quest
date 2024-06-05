@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateLastCompletionDate } from "../feature/Slices/completeHabitSlice";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { LineGraph } from "./chart/Line";
+
 
 const HabitCard = ({
   name,
@@ -102,13 +104,8 @@ const HabitCard = ({
 
         <div className="mt-4 bg-slate-800 border border-slate-500/50 p-4 rounded-lg">
           <div className="flex flex-col gap-2">
-            <h1 className="text-lg">Habit Weekly (progress)</h1>
-            <div className="flex flex-row gap-2">
-              {weeklyHabits.map((item, i) => (
-                <div className="bg-white w-3 h-3" key={i} />
-              ))}
-            </div>
-            <div className="mt-4">
+           
+            <div className="">
               <h1 className="text-lg">
                 Habit xp (progress){" "}
                 <span className="text-sm opacity-50">
